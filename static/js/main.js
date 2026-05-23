@@ -39,6 +39,20 @@ function showToast(message, type = "success") {
   toast.show();
 }
 
+async function deleteWithRefresh(deleteFn, successMessage, reloadFn) {
+  try {
+    await deleteFn();
+    showToast(successMessage);
+    try {
+      await reloadFn();
+    } catch (reloadError) {
+      showToast(`Ошибка обновления списка: ${reloadError.message}`, "danger");
+    }
+  } catch (error) {
+    showToast(`Ошибка: ${error.message}`, "danger");
+  }
+}
+
 function setButtonLoading(button, loading) {
   if (!button) {
     return;
@@ -286,20 +300,19 @@ function initUsersPage() {
         if (!window.confirm(`Удалить пользователя ${user.email}?`)) {
           return;
         }
-        try {
-          await api.deleteUser(user.id);
-          showToast("Пользователь удалён");
-          await loadUsers();
-        } catch (error) {
-          showToast(`Ошибка: ${error.message}`, "danger");
-        }
+        await deleteWithRefresh(
+          () => api.deleteUser(user.id),
+          "Пользователь удалён",
+          () => loadUsers({ silent: true })
+        );
       });
 
       tableBody.appendChild(tr);
     });
   }
 
-  async function loadUsers() {
+  async function loadUsers(options = {}) {
+    const { silent = false } = options;
     tableBody.replaceChildren();
     const loadingRow = document.createElement("tr");
     const cell = document.createElement("td");
@@ -313,7 +326,10 @@ function initUsersPage() {
       const users = await api.getUsers();
       renderUsers(users);
     } catch (error) {
-      showToast(`Ошибка: ${error.message}`, "danger");
+      if (!silent) {
+        showToast(`Ошибка: ${error.message}`, "danger");
+      }
+      throw error;
     }
   }
 
@@ -404,20 +420,19 @@ function initTopicsPage() {
         if (!window.confirm(`Удалить тему «${topic.name}»?`)) {
           return;
         }
-        try {
-          await api.deleteTopic(topic.id);
-          showToast("Тема удалена");
-          await loadTopics();
-        } catch (error) {
-          showToast(`Ошибка: ${error.message}`, "danger");
-        }
+        await deleteWithRefresh(
+          () => api.deleteTopic(topic.id),
+          "Тема удалена",
+          () => loadTopics({ silent: true })
+        );
       });
 
       tableBody.appendChild(row.querySelector("tr"));
     });
   }
 
-  async function loadTopics() {
+  async function loadTopics(options = {}) {
+    const { silent = false } = options;
     tableBody.replaceChildren();
     const loadingRow = document.createElement("tr");
     const cell = document.createElement("td");
@@ -431,7 +446,10 @@ function initTopicsPage() {
       const topics = await api.getTopics();
       renderTopics(topics);
     } catch (error) {
-      showToast(`Ошибка: ${error.message}`, "danger");
+      if (!silent) {
+        showToast(`Ошибка: ${error.message}`, "danger");
+      }
+      throw error;
     }
   }
 
