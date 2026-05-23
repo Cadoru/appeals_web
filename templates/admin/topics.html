@@ -1,0 +1,73 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Темы{% endblock %}
+{% block page_id %}admin-topics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h4 mb-0">Темы обращений</h1>
+  <button type="button" id="btn-create-topic" class="btn btn-primary btn-sm">Создать</button>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Название</th>
+          <th>Активна</th>
+          <th>Порядок</th>
+          <th class="table-actions">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="topics-table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<template id="topic-row-template">
+  <tr>
+    <td class="topic-name"></td>
+    <td class="topic-active"></td>
+    <td class="topic-sort"></td>
+    <td class="table-actions">
+      <button type="button" class="btn btn-outline-secondary btn-sm btn-edit">Изменить</button>
+      <button type="button" class="btn btn-outline-danger btn-sm btn-delete">Удалить</button>
+    </td>
+  </tr>
+</template>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="topic-modal" tabindex="-1" aria-labelledby="topic-modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="topic-form" class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="topic-modal-title">Тема</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="topic-name" class="form-label">Название</label>
+          <input type="text" id="topic-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="topic-sort-order" class="form-label">Порядок сортировки</label>
+          <input type="number" id="topic-sort-order" class="form-control" value="0" min="0">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="topic-is-active" class="form-check-input" checked>
+          <label for="topic-is-active" class="form-check-label">Активна</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm btn-spinner d-none" role="status" aria-hidden="true"></span>
+          Сохранить
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

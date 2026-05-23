@@ -1,0 +1,144 @@
+:root {
+  --color-primary: #0d6efd;
+  --color-success: #198754;
+  --color-danger: #dc3545;
+  --color-muted: #6c757d;
+  --sidebar-width: 240px;
+  --body-bg: #f8f9fa;
+}
+
+body {
+  background-color: var(--body-bg);
+}
+
+.public-page {
+  max-width: 720px;
+}
+
+.public-logo__img {
+  max-width: min(100%, 320px);
+  height: auto;
+}
+
+.appeal-form {
+  font-family: Calibri, "Segoe UI", Candara, sans-serif;
+}
+
+.appeal-form__header {
+  background-color: #ee712e;
+  border-bottom: none;
+  padding: 1rem 1.25rem;
+}
+
+.appeal-form__title {
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+}
+
+.appeal-form__submit {
+  background-color: #EE712E;
+  border-color: #EE712E;
+  color: #fff;
+}
+
+.appeal-form__submit:hover:not(:disabled),
+.appeal-form__submit:focus:not(:disabled) {
+  background-color: #cf440d;
+  border-color: #cf440d;
+  color: #fff;
+}
+
+.appeal-form__submit:disabled {
+  background-color: #EE712E;
+  border-color: #EE712E;
+  color: #fff;
+  opacity: 0.55;
+}
+
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background: #212529;
+}
+
+.admin-sidebar__logo {
+  flex-shrink: 0;
+  display: block;
+}
+
+.admin-sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.75);
+  border-radius: 0.375rem;
+  margin-bottom: 0.25rem;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-content {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.table-actions {
+  white-space: nowrap;
+}
+
+.btn-spinner {
+  width: 1rem;
+  height: 1rem;
+}
+
+.text-preview-cell {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.login-card {
+  max-width: 420px;
+  width: 100%;
+}
+
+.login-page {
+  font-family: Calibri, "Segoe UI", Candara, sans-serif;
+}
+
+.login-page__submit {
+  background-color: #ee712e;
+  border-color: #ee712e;
+  color: #fff;
+}
+
+.login-page__submit:hover:not(:disabled),
+.login-page__submit:focus:not(:disabled) {
+  background-color: #d96528;
+  border-color: #d96528;
+  color: #fff;
+}
+
+.login-page__submit:disabled {
+  background-color: #ee712e;
+  border-color: #ee712e;
+  color: #fff;
+  opacity: 0.65;
+}
+
+.attachment-preview__img {
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.toast-container {
+  z-index: 1090;
+}

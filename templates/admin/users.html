@@ -1,0 +1,104 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Пользователи{% endblock %}
+{% block page_id %}admin-users{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h4 mb-0">Пользователи</h1>
+  <button type="button" id="btn-create-user" class="btn btn-primary btn-sm">Создать</button>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Активен</th>
+          <th>Email</th>
+          <th>ФИО</th>
+          <th>Роль</th>
+          <th>Telegram</th>
+          <th>Chat ID</th>
+          <th class="table-actions">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="users-table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<template id="user-row-template">
+  <tr>
+    <td class="user-active"></td>
+    <td class="user-email"></td>
+    <td class="user-full-name"></td>
+    <td class="user-role"></td>
+    <td class="user-notify-telegram"></td>
+    <td class="user-telegram-chat-id"></td>
+    <td class="table-actions">
+      <button type="button" class="btn btn-outline-secondary btn-sm btn-edit">Изменить</button>
+      <button type="button" class="btn btn-outline-danger btn-sm btn-delete">Удалить</button>
+    </td>
+  </tr>
+</template>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="user-modal" tabindex="-1" aria-labelledby="user-modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="user-form" class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="user-modal-title">Пользователь</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="user-email" class="form-label">Email</label>
+          <input type="email" id="user-email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="user-full-name" class="form-label">ФИО</label>
+          <input type="text" id="user-full-name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="user-role" class="form-label">Роль</label>
+          <select id="user-role" class="form-select">
+            <option value="operator">Оператор</option>
+            <option value="admin">Администратор</option>
+          </select>
+        </div>
+        <div class="mb-3 form-check" id="user-is-active-wrap">
+          <input type="checkbox" id="user-is-active" class="form-check-input" checked>
+          <label for="user-is-active" class="form-check-label">Активен</label>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" id="user-notify-telegram" class="form-check-input">
+          <label for="user-notify-telegram" class="form-check-label">Уведомления в Telegram</label>
+        </div>
+        <div class="mb-3">
+          <label for="user-telegram-chat-id" class="form-label">Telegram Chat ID</label>
+          <input
+            type="text"
+            id="user-telegram-chat-id"
+            class="form-control"
+            placeholder="Например: 123456789"
+            autocomplete="off"
+          >
+        </div>
+        <div class="mb-3" id="user-password-wrap">
+          <label for="user-password" class="form-label">Пароль</label>
+          <input type="password" id="user-password" class="form-control" minlength="8">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button type="submit" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm btn-spinner d-none" role="status" aria-hidden="true"></span>
+          Сохранить
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

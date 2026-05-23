@@ -1,0 +1,60 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Обращения{% endblock %}
+{% block page_id %}admin-appeals{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h4 mb-0">Обращения</h1>
+</div>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Тема</th>
+          <th>Текст</th>
+          <th>Вложения</th>
+          <th>Статус</th>
+          <th>Создано</th>
+          <th class="table-actions">Действия</th>
+        </tr>
+      </thead>
+      <tbody id="appeals-table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<template id="appeal-row-template">
+  <tr>
+    <td class="appeal-topic"></td>
+    <td class="appeal-text text-preview-cell"></td>
+    <td class="appeal-attachments text-center"></td>
+    <td>
+      <select class="form-select form-select-sm appeal-status" aria-label="Статус обращения"></select>
+    </td>
+    <td class="appeal-created"></td>
+    <td class="table-actions">
+      <button type="button" class="btn btn-outline-secondary btn-sm btn-view">Просмотр</button>
+    </td>
+  </tr>
+</template>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="appeal-view-modal" tabindex="-1" aria-labelledby="appeal-view-title" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title h5" id="appeal-view-title">Обращение</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body" id="appeal-view-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
