@@ -140,5 +140,22 @@ body {
 }
 
 .toast-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translateX(-50%);
   z-index: 1090;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast-container .toast {
+  pointer-events: auto;
+  text-align: center;
 }

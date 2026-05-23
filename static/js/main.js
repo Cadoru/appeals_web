@@ -11,6 +11,9 @@ const ROLE_LABELS = {
   operator: "Оператор",
 };
 
+const APPEAL_TEXT_MAX_LENGTH = 5000;
+const APPEAL_FILE_MAX_BYTES = 10 * 1024 * 1024;
+
 function showToast(message, type = "success") {
   const container = document.getElementById("toast-container");
   if (!container) {
@@ -87,12 +90,23 @@ function initPublicPage() {
 
   const topicSelect = document.getElementById("topic_id");
   const textArea = document.getElementById("appeal-text");
+  const filesInput = document.getElementById("appeal-files");
   const submitBtn = document.getElementById("submit-appeal");
+
+  function getOversizedFiles(files) {
+    return Array.from(files || []).filter(
+      (file) => file.size > APPEAL_FILE_MAX_BYTES
+    );
+  }
 
   function validateForm() {
     const topicValid = Boolean(topicSelect.value);
-    const textValid = textArea.value.trim().length >= 1;
-    submitBtn.disabled = !(topicValid && textValid);
+    const textLength = textArea.value.trim().length;
+    const textValid =
+      textLength >= 1 && textLength <= APPEAL_TEXT_MAX_LENGTH;
+    const filesValid = getOversizedFiles(filesInput.files).length === 0;
+    submitBtn.disabled = !(topicValid && textValid && filesValid);
+    return topicValid && textValid && filesValid;
   }
 
   async function loadTopics() {
@@ -117,11 +131,25 @@ function initPublicPage() {
 
   topicSelect.addEventListener("change", validateForm);
   textArea.addEventListener("input", validateForm);
+  filesInput.addEventListener("change", () => {
+    const oversized = getOversizedFiles(filesInput.files);
+    if (oversized.length > 0) {
+      const names = oversized.map((file) => file.name).join(", ");
+      showToast(`Файл превышает 10 МБ: ${names}`, "danger");
+      filesInput.value = "";
+    }
+    validateForm();
+  });
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    validateForm();
-    if (submitBtn.disabled) {
+    if (!validateForm()) {
+      const oversized = getOversizedFiles(filesInput.files);
+      if (oversized.length > 0) {
+        showToast("Размер каждого файла не должен превышать 10 МБ", "danger");
+      } else if (textArea.value.trim().length > APPEAL_TEXT_MAX_LENGTH) {
+        showToast("Текст обращения не должен превышать 5000 символов", "danger");
+      }
       return;
     }
 
@@ -129,7 +157,6 @@ function initPublicPage() {
     formData.append("topic_id", topicSelect.value);
     formData.append("text", textArea.value.trim());
 
-    const filesInput = document.getElementById("appeal-files");
     Array.from(filesInput.files || []).forEach((file) => {
       formData.append("files", file);
     });

@@ -1,17 +1,26 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template, send_from_directory, url_for
 
 load_dotenv()
 
 app = Flask(__name__)
-BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000/api")
+BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://10.30.254.163:8000/api")
 
 
 @app.context_processor
 def inject_config():
     return {"backend_api_url": BACKEND_API_URL}
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/png",
+    )
 
 
 @app.route("/")
@@ -45,4 +54,4 @@ def admin_appeals():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=3000)
+    app.run(debug=True, host='10.30.254.163', port=3000)
